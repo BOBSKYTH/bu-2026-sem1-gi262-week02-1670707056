@@ -1027,7 +1027,123 @@ namespace Assignment
         public void EX_01_TicTacToeGame_TurnPlay()
         {
             var board = ex01_board.Get2DArray();
-            throw new NotImplementedException();
+            // ตรวจสอบตำแหน่ง
+    if (ex01_row < 0 || ex01_row >= 3 ||
+        ex01_column < 0 || ex01_column >= 3)
+    {
+        PrintBoard(board);
+        Debug.Log(">> Invalid move");
+        return;
+    }
+
+    // ตรวจสอบช่องว่าง
+    if (!string.IsNullOrEmpty(board[ex01_row, ex01_column]))
+    {
+        PrintBoard(board);
+        Debug.Log(">> Invalid move");
+        return;
+    }
+
+    // ใส่ X หรือ O
+    board[ex01_row, ex01_column] = ex01_playerTurn;
+
+    // แสดงกระดาน
+    PrintBoard(board);
+
+    // ตรวจสอบแถว
+    bool win = false;
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (board[ex01_row, i] != ex01_playerTurn)
+        {
+            win = false;
+            break;
+        }
+
+        win = true;
+    }
+
+    // ตรวจสอบคอลัมน์
+    if (!win)
+    {
+        win = true;
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (board[i, ex01_column] != ex01_playerTurn)
+            {
+                win = false;
+                break;
+            }
+        }
+    }
+
+    // ตรวจสอบเส้นทแยงมุมหลัก
+    if (!win && ex01_row == ex01_column)
+    {
+        win = true;
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (board[i, i] != ex01_playerTurn)
+            {
+                win = false;
+                break;
+            }
+        }
+    }
+
+    // ตรวจสอบเส้นทแยงมุมรอง
+    if (!win && ex01_row + ex01_column == 2)
+    {
+        win = true;
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (board[i, 2 - i] != ex01_playerTurn)
+            {
+                win = false;
+                break;
+            }
+        }
+    }
+
+    // ถ้าชนะ
+    if (win)
+    {
+        Debug.Log($">> {ex01_playerTurn} Win!");
+        return;
+    }
+
+    // ตรวจสอบ Draw / Continue
+    bool full = true;
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (string.IsNullOrEmpty(board[i, j]))
+            {
+                full = false;
+                break;
+            }
+        }
+
+        if (!full)
+        {
+            break;
+        }
+    }
+
+    if (full)
+    {
+        Debug.Log(">> Draw");
+    }
+    else
+    {
+        Debug.Log(">> Continue");
+    }
         }
         #endregion
 
